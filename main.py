@@ -1,42 +1,78 @@
 from Jacobi import Jacobi
-from entity.Model import Model
+from configParams import *
+
+import math
 import numpy as np
-import matplotlib.pyplot as plt
 
-a, b = 20, 20                   # длина, ширина
-u0Left, u0Right = 200, 350      # -73, 76
-u0Top, u0Bottom = 320, 320      # 47, 47
-k = 10                          # теплопроводность
-f0, beta = 30, 0
-x0, z0 = a / 2, b / 2
-n, m = 20, 20
+from visualizer import draw2D, draw3D
 
 
-def getInitData():
-    model = Model()
-    # model.setA(a)
-    # model.setB(b)
-    # model.setK(k)
-    # model.setBeta(beta)
-    # model.setF0(f0)
-    # model.setX0Z0(x0, z0)
-    return model
+def f(x, z):
+    return f0 * math.exp(beta * (x - x0) ** 2 * (z - z0) ** 2) / k
 
 
-def main():
-    model = getInitData()
-    a = model.getMatrixA()
-    b = model.getMatrixB()
-    tempU = Jacobi(a, b)
+def to(i, j=0):
+    """ Transform real coordinates to matrix's A coordinates """
+    return n * i + j
+
+
+def toOrig(matr):
     u = np.zeros((n, m))
 
     for i in range(n):
         for j in range(m):
-            u[i][j] = tempU[m * i + j]
-    print(u)
+            u[i][j] = matr[m * i + j]
+    return u
 
-    plt.imshow(u, cmap='hot')
-    plt.show()
+
+def getMatrixA():
+    stepX2 = stepX ** 2
+    stepZ2 = stepZ ** 2
+    tempSize = n * m
+    matrA = np.zeros((tempSize, tempSize))
+
+    for i in range(n):
+        matrA[to(0, i)][to(0, i)] = 1           # top
+        matrA[to(i)][to(i)] = 1                 # left
+        matrA[to(i, n - 1)][to(i, n - 1)] = 1   # right
+        matrA[to(m - 1, i)][to(m - 1, i)] = 1   # bottom
+
+    stepX2Inv = 1 / stepX2
+    stepZ2Inv = 1 / stepZ2
+    for i in range(1, n - 1):
+        for j in range(1, m - 1):
+            ij = to(i, j)
+            matrA[ij][ij] = -2 * (stepX2Inv + stepZ2Inv)
+            matrA[ij][to(i + 1, j)] = stepX2Inv
+            matrA[ij][to(i - 1, j)] = stepX2Inv
+            matrA[ij][to(i, j + 1)] = stepZ2Inv
+            matrA[ij][to(i, j - 1)] = stepZ2Inv
+    return matrA
+
+
+def getMatrixB():
+    matrB = np.zeros(n * m)
+
+    for i in range(n):
+        matrB[to(0, i)] = u0Top                 # top
+        matrB[to(i)] = u0Left                   # left
+        matrB[to(i, n - 1)] = u0Right           # right
+        matrB[to(m - 1, i)] = u0Bottom          # bottom
+
+    for i in range(1, n - 1):
+        for j in range(1, m - 1):
+            matrB[to(i, j)] = f(i * stepX, j * stepZ)
+    return matrB
+
+
+def main():
+    matrA = getMatrixA()
+    matrB = getMatrixB()
+
+    matrU = Jacobi(matrA, matrB)
+
+    draw3D(toOrig(matrU))
+
 
 if __name__ == '__main__':
     main()
