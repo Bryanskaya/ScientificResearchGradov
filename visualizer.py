@@ -14,7 +14,7 @@ def draw3D(matr):
     (x, y) = np.meshgrid(np.arange(matr.shape[0]), np.arange(matr.shape[1]))
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(x, y, matr, cmap='hot')
+    surf = ax.plot_surface(x, y, matr, cmap=cm.coolwarm)
 
     fig.colorbar(surf)
 
