@@ -1,26 +1,31 @@
-from numba import njit, prange
+# from numba import njit, prange
 
 
-def sum(a, x, j):
-    s = 0
-    for i, (m, y) in enumerate(zip(a, x)):
-        if i != j:
-            s += m * y
+def sum(strMatrA, x, i):
+    s = - strMatrA[i] * x[i]
+    for j in range(len(strMatrA)):
+        s += strMatrA[j] * x[j]
     return s
 
 
 def norm(x, y):
-    return max((abs(x0-y0) for x0, y0 in zip(x, y)))
+    maxDiff = 0
+    for i in range(len(x)):
+        maxDiff = max(maxDiff, abs(x[i] - y[i]))
+    return maxDiff
 
 
-def Jacobi(matrA, matrB, eps=0.001, x_init=None):
-    y = [b / matrA[i][i] for i, b in enumerate(matrB)] if x_init is None else x_init.copy()
+def Jacobi(matrA, vectB, eps=0.001, x_init=None):
+    # y = [b / matrA[i][i] for i, b in enumerate(vectB)] if x_init is None else x_init.copy()
+    y = [0] * len(vectB) if x_init is None else x_init.copy()
 
-    x = [-(sum(a, y, i) - matrB[i]) / matrA[i][i] for i, a in enumerate(matrA)]
+    x = []
+    for i in range(len(matrA)):
+        x.append(-(sum(matrA[i], y, i) - vectB[i]) / matrA[i][i])
 
+    print(len(y), len(matrA), len(x))
     while norm(y, x) > eps:
-        for i, elem in enumerate(x):
-            y[i] = elem
-        for i, a in enumerate(matrA):
-            x[i] = -(sum(a, y, i) - matrB[i]) / matrA[i][i]
+        y = x.copy()
+        for i in range(len(matrA)):
+            x[i] = (vectB[i] - sum(matrA[i], y, i)) / matrA[i][i]
     return x

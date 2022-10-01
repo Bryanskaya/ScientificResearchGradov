@@ -67,9 +67,10 @@ def getMatrixB():
 
 def main():
     matrA = getMatrixA()
-    matrB = getMatrixB()
+    vectB = getMatrixB()
+    vectX = [0] * len(vectB)
 
-    matrU = Jacobi(matrA, matrB)
+    matrU = Jacobi(matrA, vectB)
 
     draw3D(toOrig(matrU))
 
