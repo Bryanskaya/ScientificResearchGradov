@@ -43,6 +43,14 @@ def isBorder(i, j):
     return False
 
 
+def borderTemperature(i, j):
+    if i == holeI: return u0TopInside
+    if i == holeI + holeN: return u0BottomInside
+    if j == holeJ: return u0LeftInside
+    if j == holeJ + holeM: return u0RightInside
+    print("*****", i, j)
+
+
 def getMatrixA():
     stepX2 = stepX ** 2
     stepZ2 = stepZ ** 2
@@ -86,7 +94,8 @@ def getVectB():
             if isHole(i, j):
                 value = holeU0
             elif isBorder(i, j):
-                value = u0TopInside
+                value = borderTemperature(i, j)
+                # value = u0TopInside
             else:
                 value = f(i * stepX, j * stepZ)
 
