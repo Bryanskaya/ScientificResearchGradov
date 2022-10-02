@@ -8,24 +8,23 @@ def sum(strMatrA, x, i):
     return s
 
 
-def norm(x, y):
-    maxDiff = 0
-    for i in range(len(x)):
-        maxDiff = max(maxDiff, abs(x[i] - y[i]))
-    return maxDiff
+def isComplete(vectX, vectXPrev, eps):
+    for i in range(len(vectX)):
+        if abs(vectX[i] - vectXPrev[i]) > eps:
+            return True
+    return False
 
 
-def Jacobi(matrA, vectB, eps=0.001, x_init=None):
-    # y = [b / matrA[i][i] for i, b in enumerate(vectB)] if x_init is None else x_init.copy()
-    y = [0] * len(vectB) if x_init is None else x_init.copy()
+def Jacobi(matrA, vectB, x_init=None, eps=0.001):
+    # vectXPrev = [b / matrA[i][i] for i, b in enumerate(vectB)] if x_init is None else x_init.copy()
+    vectXPrev = [0] * len(vectB) if x_init is None else x_init.copy()
 
-    x = []
+    vectX = []
     for i in range(len(matrA)):
-        x.append(-(sum(matrA[i], y, i) - vectB[i]) / matrA[i][i])
+        vectX.append((vectB[i] - sum(matrA[i], vectXPrev, i)) / matrA[i][i])
 
-    print(len(y), len(matrA), len(x))
-    while norm(y, x) > eps:
-        y = x.copy()
+    while isComplete(vectX, vectXPrev, eps):
+        vectXPrev = vectX.copy()
         for i in range(len(matrA)):
-            x[i] = (vectB[i] - sum(matrA[i], y, i)) / matrA[i][i]
-    return x
+            vectX[i] = (vectB[i] - sum(matrA[i], vectXPrev, i)) / matrA[i][i]
+    return vectX

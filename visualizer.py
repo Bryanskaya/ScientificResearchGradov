@@ -2,8 +2,11 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import numpy as np
 
+from configParams import b, a
+
+
 def draw2D(matr):
-    plt.imshow(matr, cmap=cm.coolwarm)
+    plt.imshow(matr, cmap=cm.coolwarm, extent=[0, b, a, 0])
     # plt.imshow(matr, cmap='hot')
     plt.show()
 
@@ -23,13 +26,3 @@ def draw3D(matr):
     ax.set_zlabel('U')
 
     plt.show()
-
-
-# def surface_plot (matr, **kwargs):
-#     (x, y) = np.meshgrid(np.arange(matr.shape[0]), np.arange(matr.shape[1]))
-#     fig = plt.figure()
-#     ax = fig.add_subplot(111, projection='3d')
-#     surf = ax.plot_surface(x, y, matr, **kwargs)
-#     return (fig, ax, surf)
-
-

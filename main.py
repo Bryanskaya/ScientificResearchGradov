@@ -25,6 +25,24 @@ def toOrig(matr):
     return u
 
 
+def isHole(i, j):
+    if holeI < i < holeI + holeN and \
+            holeJ < j < holeJ + holeM:
+        return True
+    return False
+
+
+def isBorder(i, j):
+    if i < holeI or i > holeI + holeN or \
+            j < holeJ or j > holeJ + holeM:
+        return False
+
+    if holeI == i or i == holeI + holeN or \
+            holeJ == j or j == holeJ + holeM:
+        return True
+    return False
+
+
 def getMatrixA():
     stepX2 = stepX ** 2
     stepZ2 = stepZ ** 2
@@ -32,16 +50,20 @@ def getMatrixA():
     matrA = np.zeros((tempSize, tempSize))
 
     for i in range(n):
-        matrA[to(0, i)][to(0, i)] = 1           # top
-        matrA[to(i)][to(i)] = 1                 # left
-        matrA[to(i, n - 1)][to(i, n - 1)] = 1   # right
-        matrA[to(m - 1, i)][to(m - 1, i)] = 1   # bottom
+        matrA[to(0, i)][to(0, i)] = 1  # top
+        matrA[to(i)][to(i)] = 1  # left
+        matrA[to(i, n - 1)][to(i, n - 1)] = 1  # right
+        matrA[to(m - 1, i)][to(m - 1, i)] = 1  # bottom
 
     stepX2Inv = 1 / stepX2
     stepZ2Inv = 1 / stepZ2
     for i in range(1, n - 1):
         for j in range(1, m - 1):
             ij = to(i, j)
+            if isHole(i, j) or isBorder(i, j):
+                matrA[ij][ij] = 1
+                continue
+
             matrA[ij][ij] = -2 * (stepX2Inv + stepZ2Inv)
             matrA[ij][to(i + 1, j)] = stepX2Inv
             matrA[ij][to(i - 1, j)] = stepX2Inv
@@ -50,29 +72,37 @@ def getMatrixA():
     return matrA
 
 
-def getMatrixB():
-    matrB = np.zeros(n * m)
+def getVectB():
+    vectB = np.zeros(n * m)
 
     for i in range(n):
-        matrB[to(0, i)] = u0Top                 # top
-        matrB[to(i)] = u0Left                   # left
-        matrB[to(i, n - 1)] = u0Right           # right
-        matrB[to(m - 1, i)] = u0Bottom          # bottom
+        vectB[to(0, i)] = u0Top  # top
+        vectB[to(i)] = u0Left  # left
+        vectB[to(i, n - 1)] = u0Right  # right
+        vectB[to(m - 1, i)] = u0Bottom  # bottom
 
     for i in range(1, n - 1):
         for j in range(1, m - 1):
-            matrB[to(i, j)] = f(i * stepX, j * stepZ)
-    return matrB
+            if isHole(i, j):
+                value = holeU0
+            elif isBorder(i, j):
+                value = u0TopInside
+            else:
+                value = f(i * stepX, j * stepZ)
+
+            vectB[to(i, j)] = value
+    return vectB
 
 
 def main():
     matrA = getMatrixA()
-    vectB = getMatrixB()
+    vectB = getVectB()
     vectX = [0] * len(vectB)
 
-    matrU = Jacobi(matrA, vectB)
+    matrU = Jacobi(matrA, vectB, vectX)
 
-    draw3D(toOrig(matrU))
+    # draw3D(toOrig(matrU))
+    draw2D(toOrig(matrU))
 
 
 if __name__ == '__main__':
