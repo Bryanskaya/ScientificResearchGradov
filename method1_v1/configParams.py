@@ -12,7 +12,7 @@ holeU0 = 200                              # temperature inside the hole
 k = 50                                  # теплопроводность
 f0, beta = 30_000, 100
 
-n, m = 20, 20
+n, m = 40, 40
 
 stepX, stepZ = a / n, b / m
 holeI, holeJ = round(holeX / stepX), round(holeZ / stepZ)
