@@ -1,6 +1,3 @@
-# from numba import njit, prange
-
-
 def sum(strMatrA, x, i):
     s = -strMatrA[i] * x[i]
     for j in range(len(strMatrA)):
@@ -16,7 +13,6 @@ def isComplete(vectX, vectXPrev, eps):
 
 
 def Jacobi(matrA, vectB, x_init=None, eps=0.001):
-    # vectXPrev = [b / matrA[i][i] for i, b in enumerate(vectB)] if x_init is None else x_init.copy()
     vectXPrev = [0] * len(vectB) if x_init is None else x_init.copy()
 
     vectX = []
