@@ -6,7 +6,10 @@ from configParams import b, a
 
 
 def draw2D(matr):
-    plt.imshow(matr, cmap=cm.coolwarm, extent=[0, b, a, 0])
+    axim = plt.imshow(matr, cmap=cm.coolwarm, extent=[0, b, a, 0])
+    plt.colorbar(axim)
+    plt.xlabel('x')
+    plt.ylabel('z')
     # plt.imshow(matr, cmap='hot')
     plt.show()
 

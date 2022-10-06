@@ -21,7 +21,7 @@ def toOrig(matr):
 
     for i in range(n):
         for j in range(m):
-            u[i][j] = matr[m * i + j]
+            u[i][j] = None if isHole(i, j) else matr[m * i + j]
     return u
 
 
@@ -58,10 +58,10 @@ def getMatrixA():
     matrA = np.zeros((tempSize, tempSize))
 
     for i in range(n):
-        matrA[to(0, i)][to(0, i)] = 1  # top
-        matrA[to(i)][to(i)] = 1  # left
-        matrA[to(i, n - 1)][to(i, n - 1)] = 1  # right
-        matrA[to(m - 1, i)][to(m - 1, i)] = 1  # bottom
+        matrA[to(0, i)][to(0, i)] = 1           # top
+        matrA[to(i)][to(i)] = 1                 # left
+        matrA[to(i, n - 1)][to(i, n - 1)] = 1   # right
+        matrA[to(m - 1, i)][to(m - 1, i)] = 1   # bottom
 
     stepX2Inv = 1 / stepX2
     stepZ2Inv = 1 / stepZ2
@@ -95,7 +95,6 @@ def getVectB():
                 value = holeU0
             elif isBorder(i, j):
                 value = borderTemperature(i, j)
-                # value = u0TopInside
             else:
                 value = f(i * stepX, j * stepZ)
 
