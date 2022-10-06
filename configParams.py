@@ -10,11 +10,11 @@ holeX, holeZ = 3, 3                     # top-left hole point
 holeU0 = 200                              # temperature inside the hole
 
 k = 50                                  # теплопроводность
-f0, beta = 30, 0
+f0, beta = 30_000, 100
 
 n, m = 20, 20
 
 stepX, stepZ = a / n, b / m
 holeI, holeJ = round(holeX / stepX), round(holeZ / stepZ)
 holeN, holeM = round(holeA / stepX) + 1, round(holeB / stepZ) + 1
-x0, z0 = 2, 0.001
+x0, z0 = 8, 2

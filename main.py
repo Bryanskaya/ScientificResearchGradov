@@ -8,7 +8,7 @@ from visualizer import draw2D, draw3D
 
 
 def f(x, z):
-    return f0 * math.exp(beta * (x - x0) ** 2 * (z - z0) ** 2) / k
+    return f0 * math.exp(-beta * ((x - x0) ** 2 + (z - z0) ** 2)) / k
 
 
 def to(i, j=0):
@@ -96,7 +96,7 @@ def getVectB():
             elif isBorder(i, j):
                 value = borderTemperature(i, j)
             else:
-                value = f(i * stepX, j * stepZ)
+                value = -f(i * stepX, j * stepZ)
 
             vectB[to(i, j)] = value
     return vectB

@@ -2,7 +2,7 @@
 
 
 def sum(strMatrA, x, i):
-    s = - strMatrA[i] * x[i]
+    s = -strMatrA[i] * x[i]
     for j in range(len(strMatrA)):
         s += strMatrA[j] * x[j]
     return s
