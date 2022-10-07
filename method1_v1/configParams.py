@@ -15,6 +15,6 @@ f0, beta = 1_000, 0.3
 n, m = 30, 15
 
 stepX, stepZ = a / n, b / m
-holeI, holeJ = round(holeZ / stepX), round(holeX / stepZ)
+holeI, holeJ = round(holeZ / stepZ), round(holeX / stepX)
 holeN, holeM = round(holeA / stepX) + 1, round(holeB / stepZ) + 1
 x0, z0 = 2, 8
