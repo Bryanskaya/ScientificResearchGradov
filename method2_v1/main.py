@@ -2,6 +2,8 @@ import random
 import numpy as np
 
 from configParams import *
+from monte_carlo import isBorder, monte_carlo, uBorder
+from visualizer import draw2D
 
 
 def to(i, j=0):
@@ -24,40 +26,34 @@ def borderTemperature(i, j):
     print("*****", i, j)
 
 
-def getMatrixA():
-    stepX2 = stepX ** 2
-    stepZ2 = stepZ ** 2
-    tempSize = n * m
-    matrA = np.zeros((tempSize, tempSize))
+def getMatrix():
+    matrA = np.zeros((m, n))
 
     for i in range(m):
-        matrA[to(i)][to(i)] = 1                 # left
-        matrA[to(i, n - 1)][to(i, n - 1)] = 1   # right
+        matrA[i][0] = u0Left                    # left
+        matrA[i][n - 1] = u0Right               # right
     for i in range(n):
-        matrA[to(0, i)][to(0, i)] = 1           # top
-        matrA[to(m - 1, i)][to(m - 1, i)] = 1   # bottom
+        matrA[0][i] = u0Top                     # top
+        matrA[m - 1][i] = u0Bottom              # bottom
 
-    stepX2Inv = 1 / stepX2
-    stepZ2Inv = 1 / stepZ2
     for i in range(1, m - 1):
         for j in range(1, n - 1):
-            ij = to(i, j)
-            if isHole(i, j) or isBorder(i, j):
-                matrA[ij][ij] = 1
+            if isHole(i, j):
+                matrA[i][j] = None
+                continue
+            if isBorder(i, j):
+                matrA[i][j] = uBorder(i, j)
                 continue
 
-            matrA[ij][ij] = -2 * (stepX2Inv + stepZ2Inv)
-            matrA[ij][to(i + 1, j)] = stepX2Inv
-            matrA[ij][to(i - 1, j)] = stepX2Inv
-            matrA[ij][to(i, j + 1)] = stepZ2Inv
-            matrA[ij][to(i, j - 1)] = stepZ2Inv
     return matrA
 
 
 def main():
     random.seed()
 
-    matrA = getMatrixA()
+    matrA = getMatrix()
+    matrU = monte_carlo(matrA)
+    draw2D(matrU)
 
 
 if __name__ == '__main__':

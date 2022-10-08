@@ -19,13 +19,13 @@ holeU0 = 200                              # temperature inside the hole
 k = 10                                  # теплопроводность
 f0, beta = 1_000, 0.3
 
-n, m = 20, 10
+n, m = 40, 20
 
 stepX, stepZ = a / n, b / m
 holeI, holeJ = round(holeZ / stepZ), round(holeX / stepX)
 holeN, holeM = round(holeA / stepX) + 1, round(holeB / stepZ) + 1
-x0, z0 = 2, 8
+x0, z0 = 3, 7
 
 #--------------------------
 iStart, jStart = 4, 3
-nItems = 10
+nItems = 100
