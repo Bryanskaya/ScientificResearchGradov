@@ -1,13 +1,10 @@
-import random
-import time
 
 import numpy as np
 
 from numba import njit, prange
 
 from configParams import *
-from monte_carlo import isBorder, monte_carlo, uBorder
-from visualizer import draw2D
+from parallelMonteCarlo.MonteCarlo import isBorder, monte_carlo, uBorder
 
 
 def to(i, j=0):
@@ -46,13 +43,6 @@ def getMatrix():
     return matrA
 
 
-def main():
-    random.seed()
-
+def parallelMonteCarlo():
     matrA = getMatrix()
-    matrU = monte_carlo(matrA)
-    draw2D(matrU)
-
-
-if __name__ == '__main__':
-    main()
+    return monte_carlo(matrA)

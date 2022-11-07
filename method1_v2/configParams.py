@@ -1,9 +1,9 @@
-a, b = 20, 10                           # lengh, ширина
+a, b = 20, 10                           # length, ширина
 
-u0Left, u0Right = 313, 313              # -10, 76
-u0Top, u0Bottom = 313, 313              # 68, 47
-u0LeftInside, u0RightInside = 313, 313  # 40, 65
-u0TopInside, u0BottomInside = 313, 313  # 56, 51
+u0Left, u0Right = 313, 313              # 40
+u0Top, u0Bottom = 313, 313              # 40
+u0LeftInside, u0RightInside = 313, 313  # 40
+u0TopInside, u0BottomInside = 313, 313  # 40
 
 holeA, holeB = 10, 2                     # hole's length, hole's width
 holeX, holeZ = 5, 3                     # top-left hole point
