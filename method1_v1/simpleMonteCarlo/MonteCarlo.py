@@ -1,13 +1,16 @@
 import random
 import math
 
+from numba import njit
+
 from configParams import *
 
 
+@njit(parallel=False)
 def f(x, z):
     return f0 * math.exp(-beta * ((x - x0) ** 2 + (z - z0) ** 2))
 
-
+@njit(parallel=False)
 def step(i, j):
     temp = random.random()
     if 0 <= temp < 0.25: return i, j + 1
@@ -16,10 +19,12 @@ def step(i, j):
     if 0.75 <= temp < 1: return i - 1, j
 
 
+@njit(parallel=False)
 def isBorderPlate(i, j):
     return True if i == 0 or j == 0 or i == m - 1 or j == n - 1 else False
 
 
+@njit(parallel=False)
 def isBorderHole(i, j):
     if i < holeI or i > holeI + holeM or \
             j < holeJ or j > holeJ + holeN:
@@ -31,10 +36,11 @@ def isBorderHole(i, j):
     return False
 
 
+@njit(parallel=False)
 def isBorder(i, j):
     return isBorderPlate(i, j) or isBorderHole(i, j)
 
-
+@njit(parallel=False)
 def uBorder(i, j):
     if i == 0:              return u0Top
     if i == m - 1:          return u0Bottom
@@ -47,6 +53,7 @@ def uBorder(i, j):
     if j == holeJ + holeN:  return u0RightInside
 
 
+@njit(parallel=False)
 def process(iStart, jStart):
     u = 0
     for _ in range(nItems):

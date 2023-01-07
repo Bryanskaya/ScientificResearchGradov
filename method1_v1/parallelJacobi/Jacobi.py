@@ -3,7 +3,7 @@ from numba.typed import List, Dict
 import numpy as np
 
 
-@njit
+@njit(parallel=True)
 def sum(strMatrA: Dict, x: np.ndarray, i: int) -> float:
     s = -strMatrA[i] * x[i]
     for j in strMatrA.keys():
@@ -11,7 +11,7 @@ def sum(strMatrA: Dict, x: np.ndarray, i: int) -> float:
     return s
 
 
-@njit
+@njit(parallel=True)
 def isComplete(vectX, vectXPrev, eps):
     for i in prange(len(vectX)):
         if abs(vectX[i] - vectXPrev[i]) > eps:

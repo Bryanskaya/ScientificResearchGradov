@@ -59,7 +59,7 @@ def uBorder(i, j):
 @njit(parallel=True)
 def process(iStart: int, jStart: int, matrU: np.ndarray):
     u = 0
-    for _ in range(nItems):
+    for _ in prange(nItems):
         a, nPoints = 0, 0
         i, j = iStart, jStart
         while matrU[i][j] == 0:
@@ -74,7 +74,7 @@ def process(iStart: int, jStart: int, matrU: np.ndarray):
 # @njit(parallel=True)
 def monte_carlo(matrU):
     for i in prange(m):
-        for j in prange(n):
+        for j in range(n):
             if matrU[i][j] == 0:
                 matrU[i][j] = process(i, j, matrU)
     return matrU

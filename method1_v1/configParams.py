@@ -12,7 +12,7 @@ holeU0 = 200                              # temperature inside the hole
 k = 10                                  # теплопроводность
 f0, beta = 1_000, 0.3
 
-n, m = 60, 30  # simple Jacobi 30 15
+n, m = 400, 200  # simple Jacobi 30 15
 # n, m = 200, 100  # parallel Jacobi
 
 stepX, stepZ = a / n, b / m

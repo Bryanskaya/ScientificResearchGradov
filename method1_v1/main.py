@@ -1,4 +1,4 @@
-from research.research import runTimeSize
+from research.research import runTimeSize, runOnePoint
 from research.runs import _runParallelJacobi, _runSimpleMonteCarlo, _runParallelMonteCarlo, _runSimpleJacobi
 from visualizer import draw2D, drawTable, drawPlats
 from configParams import *
@@ -53,10 +53,11 @@ def main():
     # runSimpleJacobi()
     # runParallelJacobi()
     # runSimpleMonteCarlo()
-    # runParallelMonteCarlo()
+    runParallelMonteCarlo()
     # runTime()
 
-    runTimeSize()
+    # runTimeSize()
+    # runOnePoint()
 
 
 if __name__ == '__main__':
